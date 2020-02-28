@@ -1,12 +1,14 @@
 import keyboard as key
 import time
 
+speedKey = []
 def main():
-    key.on_release_key("`", zeroSpeed)
-    key.on_press_key("1", gearOne)
-    key.on_press_key("2", gearTwo)
-    key.on_press_key("3", gearThree)
-    key.on_press_key("4", fullSpeed)
+    speedKey.append(key.on_press_key("`", zeroSpeed))
+    speedKey.append(key.on_press_key("1", gearOne))
+    speedKey.append(key.on_press_key("2", gearTwo))
+    speedKey.append(key.on_press_key("3", gearThree))
+    speedKey.append(key.on_press_key("4", fullSpeed))
+
     while True:
         time.sleep(0.05)
         if key.is_pressed("left"):
@@ -30,22 +32,20 @@ def main():
     
 
 #0, 25%, 50%, 75%, 100%
-def zeroSpeed(a):
+def zeroSpeed(e):
+    print(e)
+
+def gearOne(e):
+    print(e)
+
+def gearTwo(e):
     pass
 
-def gearOne():
+def gearThree(e):
     pass
 
-def gearTwo():
+def fullSpeed(e):
     pass
-
-def gearThree():
-    pass
-
-def fullSpeed():
-    pass
-
-
 
 def turnLeft():
     pass
