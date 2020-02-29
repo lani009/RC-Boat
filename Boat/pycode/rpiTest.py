@@ -34,6 +34,7 @@ def main():
         pass
     finally:
         s.close()
+        GPIO.cleanup()
         print("Connection Closed!")
         
 
