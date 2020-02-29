@@ -5,8 +5,10 @@ luac.out
 *.src.rock
 *.zip
 *.tar.gz
+
 #vscode
 .vscode
+
 # Object files
 *.o
 *.os

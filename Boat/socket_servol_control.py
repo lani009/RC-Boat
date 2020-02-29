@@ -19,7 +19,7 @@ while True:
 
     print('Get data:',data.decode('utf-8'))
     if data.decode('utf-8') == 'go':
-        servol = GPIO.PWM(11,50) # 11 is pin, 50 == 50hz pulsive
+        servol = GPIO.PWM(11,50) #PWM(pin_number, pulse frequency(Hz))
 
         servol.start(0)
         print("Wait 2 sec")

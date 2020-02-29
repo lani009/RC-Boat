@@ -6,7 +6,8 @@ import socket
 PORT = 1346
 #state = [speed, direction]
 state = [0, 0]
-
+#Continuous Input Protection
+continuous = False
 
 def main():
     #socket Instance
@@ -19,15 +20,15 @@ def main():
         time.sleep(0.1)
         data = 0
         state[1] = 2
-        if key.is_pressed("`"):
+        if key.is_pressed("z"):
             zeroSpeed()
-        if key.is_pressed("1"):
+        if key.is_pressed("x"):
             gearOne()
-        if key.is_pressed("2"):
+        if key.is_pressed("c"):
             gearTwo()
-        if key.is_pressed("3"):
+        if key.is_pressed("v"):
             gearThree()
-        if key.is_pressed("4"):
+        if key.is_pressed("space"):
             fullSpeed()
         left = key.is_pressed("left")
         right = key.is_pressed("right")
@@ -45,13 +46,16 @@ def main():
         if key.is_pressed("s"):
             throttleDown()
         if key.is_pressed("ctrl+q"):
-            off(s)
-
+            s.close()
+            break
         data |= state[0] << 2
         data |= state[1]
         byte = bytearray()
         byte.append(data)
+        #state data sending via socket connection
         s.send(byte)
+
+
     
 
 def connect():
@@ -103,7 +107,6 @@ def throttleDown():
 def off(s):
     s.close()
     exit()
-
 
 if __name__ == "__main__":
     main()
