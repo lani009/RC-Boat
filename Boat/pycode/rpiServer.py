@@ -40,15 +40,20 @@ spi.open(0,0)
 
 def main():
     try:
+        #socket binding
         s = serverInit()
+
+        #turn the buzzer on
         wifiBuzz(True)
         conn, addr = s.accept()
+
+        #turn the buzzre off
         wifiBuzz(False)
-        print("Connection accepted")
+        print("Connection accepted!")
         while True:
             raw_data = conn.recv(4)
             if not raw_data:
-                #data not recived -> connection closed
+                #if data not recived -> connection closing
                 raise Exception("Client Server Closed")
 
             speed, direction = parseData(int.from_bytes(raw_data, byteorder='big', signed=False))
@@ -66,6 +71,7 @@ def main():
         print("Connection Closed!")
         
 def parseData(data):
+    '''parsing data into speed and direction'''
     speed = data >> 2
     direction = data & 3
     return (speed, direction)

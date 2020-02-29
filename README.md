@@ -11,7 +11,7 @@
 >sudo apt-get install python-rpi.gpio
 >pip3 install spidev
 #### 2.2.1. SPI 사용 설정
->pi@raspberrypi ~ $ sudo raspi-config
+>pi@raspberrypi ~ $ sudo raspi-config  
 >→ 8. Advanced Options → A6 SPI → Yes and OK
 
 ## 3. 통신 방법
