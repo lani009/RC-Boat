@@ -1,6 +1,8 @@
-import keyboard as key
-import time
+import os
 import socket
+import time
+
+import keyboard as key
 
 #global variables
 PORT = 1346
@@ -59,7 +61,8 @@ def main():
         byte.append(data)
         #state data sending via socket connection
         s.send(byte)
-        s.recv(4)
+        printBoatStatus(s.recv(4))
+
 def connect():
     '''socket server connect'''
     print("***** RC-Boat *****\nInitialize")
@@ -72,6 +75,12 @@ def connect():
         print("server error", e)
     #returns the socket instance
     return s
+
+def printBoatStatus(raw_data):
+    os.system("clear")
+    data = int.from_bytes(raw_data, byteorder='big', signed=False)
+
+    print("voltage: {}".format(data))
 
 def zeroSpeed():
     state[0] = 0    #00000
