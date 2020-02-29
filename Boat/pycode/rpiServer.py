@@ -3,6 +3,8 @@ import threading
 import time
 
 import RPi.GPIO as GPIO
+import spidev
+
 
 class ANGLE():
     '''ANGLE CONSTANT'''
@@ -32,6 +34,10 @@ speed = GPIO.PWM(PIN.MOTOR, 100)
 servo.start(0)
 speed.start(0)
 
+#SPI Setup
+spi = spidev.SpiDev()
+spi.open(0,0)
+
 def main():
     try:
         s = serverInit()
@@ -40,7 +46,7 @@ def main():
         wifiBuzz(False)
         print("Connection accepted")
         while True:
-            raw_data = conn.recv(1)
+            raw_data = conn.recv(4)
             if not raw_data:
                 #data not recived -> connection closed
                 raise Exception("Client Server Closed")
@@ -48,6 +54,9 @@ def main():
             speed, direction = parseData(int.from_bytes(raw_data, byteorder='big', signed=False))
             changeRudderAngle(direction)
             changeSpeed(speed)
+            voltage = bytearray()
+            voltage.append(getVoltage())
+            conn.sendall(voltage)
     except Exception as e:
         print(e)
     finally:
@@ -95,6 +104,11 @@ def buzzing():
         time.sleep(0.5)
         GPIO.output(PIN.BUZZER, False)
         time.sleep(5)
+
+def getVoltage():
+    r = spi.xfer2([1, (8) << 4, 0])
+    adc_out = ((r[1]&3) << 8) + r[2]
+    return adc_out
 
 def serverInit():
     '''server initianizing'''

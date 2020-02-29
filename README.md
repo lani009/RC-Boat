@@ -9,6 +9,10 @@
 
 ### 2.2. RPI
 >sudo apt-get install python-rpi.gpio
+>pip3 install spidev
+#### 2.2.1. SPI 사용 설정
+>pi@raspberrypi ~ $ sudo raspi-config
+>→ 8. Advanced Options → A6 SPI → Yes and OK
 
 ## 3. 통신 방법
 ### 3.1. pc -> boat
@@ -55,3 +59,13 @@
 
 #### 4.1.3. 부가 기능
   - ctrl+q: 종료
+
+## 5. 보트 구성
+  - 라즈베리파이
+  - 와이파이 동글
+  - 전압 측정 센서
+  - 리튭폴리머 배터리
+  - ADC
+  - 서보모터
+  - 브러쉬리스 모터
+  - 우리의 운

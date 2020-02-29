@@ -59,7 +59,7 @@ def main():
         byte.append(data)
         #state data sending via socket connection
         s.send(byte)
-        s.recv(10)
+        s.recv(4)
 def connect():
     '''socket server connect'''
     print("***** RC-Boat *****\nInitialize")
