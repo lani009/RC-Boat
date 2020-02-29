@@ -2,23 +2,20 @@ import keyboard as key
 import time
 import socket
 
-IP = ''
-speedKey = []
+#global variables
 PORT = 1346
+#state = [speed, direction]
 state = [0, 0]
-def main():
-    # speedKey.append(key.on_press_key("`", zeroSpeed))
-    # speedKey.append(key.on_press_key("1", gearOne))
-    # speedKey.append(key.on_press_key("2", gearTwo))
-    # speedKey.append(key.on_press_key("3", gearThree))
-    # speedKey.append(key.on_press_key("4", fullSpeed))
 
-    #socket 전달 받음
+
+def main():
+    #socket Instance
     s = connect()
-    print("socket connection success!")
+
     left = False
     right = False
     while True:
+        #10Hz Comm
         time.sleep(0.1)
         data = 0
         state[1] = 2
@@ -34,6 +31,8 @@ def main():
             fullSpeed()
         left = key.is_pressed("left")
         right = key.is_pressed("right")
+        #if the left button and right button pushed
+        #simultaneously, prints nutural direction
         if left and right:
             state[1] = 2
         else:
@@ -46,7 +45,7 @@ def main():
         if key.is_pressed("s"):
             throttleDown()
         if key.is_pressed("ctrl+q"):
-            off()
+            off(s)
 
         data |= state[0] << 2
         data |= state[1]
@@ -54,8 +53,6 @@ def main():
         byte.append(data)
         s.send(byte)
     
-def off():
-    pass
 
 def connect():
     print("***** RC-Boat *****\nInitialize")
@@ -63,6 +60,7 @@ def connect():
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((IP, PORT))
+        print("socket connection success!")
     except:
         print("server error")
         exit()
@@ -102,7 +100,10 @@ def throttleDown():
     else:
         state[0] -= 1
 
-def call(a):
-    print(a)
+def off(s):
+    s.close()
+    exit()
+
+
 if __name__ == "__main__":
     main()
