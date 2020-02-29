@@ -32,7 +32,7 @@ def main():
             fullSpeed()
         left = key.is_pressed("left")
         right = key.is_pressed("right")
-        #if the left button and right button pushed
+        #if left button and right button pushed
         #simultaneously, prints nutural direction
         if left and right:
             state[1] = 2
@@ -41,9 +41,9 @@ def main():
                 turnLeft()
             if right:
                 turnRight()
-        if key.is_pressed("w"):
+        if key.is_pressed("w") and not continuous:
             throttleUp()
-        if key.is_pressed("s"):
+        if key.is_pressed("s") and not continuous:
             throttleDown()
         if key.is_pressed("ctrl+q"):
             s.close()
@@ -55,24 +55,21 @@ def main():
         #state data sending via socket connection
         s.send(byte)
 
-
-    
-
 def connect():
+    '''socket server connect'''
     print("***** RC-Boat *****\nInitialize")
     IP = input("ip Address: ")
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((IP, PORT))
         print("socket connection success!")
-    except:
-        print("server error")
-        exit()
+    except Exception as e:
+        print("server error", e)
+    #returns the socket instance
     return s
 
-#0, 25%, 50%, 75%, 100%
 def zeroSpeed():
-    state[0] = 0
+    state[0] = 0    #00000
 
 def gearOne():
     state[0] = 1    #00100
@@ -87,22 +84,24 @@ def fullSpeed():
     state[0] = 4    #10000
 
 def turnLeft():
-    state[1] = 0
+    state[1] = 0    #00000
 
 def turnRight():
-    state[1] = 1
+    state[1] = 1    #00001
 
 def throttleUp():
     if(state[0] > 3):
         pass
     else:
         state[0] += 1
+    continuous = True
 
 def throttleDown():
     if(state[0] < 1):
         pass
     else:
         state[0] -= 1
+    continuous = True
 
 def off(s):
     s.close()
