@@ -2,7 +2,7 @@ import keyboard as key
 import time
 import socket
 
-IP='localhost'
+IP = ''
 speedKey = []
 PORT = 1346
 state = [0, 0]
@@ -16,7 +16,6 @@ def main():
     #socket 전달 받음
     s = connect()
     print("socket connection success!")
-    data = 0
     left = False
     right = False
     while True:
@@ -46,6 +45,8 @@ def main():
             throttleUp()
         if key.is_pressed("s"):
             throttleDown()
+        if key.is_pressed("ctrl+q"):
+            off()
 
         data |= state[0] << 2
         data |= state[1]
@@ -53,6 +54,9 @@ def main():
         byte.append(data)
         s.send(byte)
     
+def off():
+    pass
+
 def connect():
     print("***** RC-Boat *****\nInitialize")
     IP = input("ip Address: ")
@@ -62,7 +66,6 @@ def connect():
     except:
         print("server error")
         exit()
-    
     return s
 
 #0, 25%, 50%, 75%, 100%
