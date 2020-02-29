@@ -10,6 +10,8 @@ state = [0, 0]
 continuous = False
 
 def main():
+    global continuous
+
     #socket Instance
     s = connect()
 
@@ -41,12 +43,15 @@ def main():
                 turnLeft()
             if right:
                 turnRight()
-        if key.is_pressed("w") and not continuous:
+        if continuous and not (key.is_pressed("w") or key.is_pressed("s")):
+            continuous = False
+        if not continuous and key.is_pressed("w"):
             throttleUp()
-        if key.is_pressed("s") and not continuous:
+        if not continuous and key.is_pressed("s"):
             throttleDown()
         if key.is_pressed("ctrl+q"):
             s.close()
+            print("connection closed")
             break
         data |= state[0] << 2
         data |= state[1]
@@ -54,7 +59,7 @@ def main():
         byte.append(data)
         #state data sending via socket connection
         s.send(byte)
-
+        s.recv(10)
 def connect():
     '''socket server connect'''
     print("***** RC-Boat *****\nInitialize")
@@ -90,6 +95,7 @@ def turnRight():
     state[1] = 1    #00001
 
 def throttleUp():
+    global continuous
     if(state[0] > 3):
         pass
     else:
@@ -97,15 +103,12 @@ def throttleUp():
     continuous = True
 
 def throttleDown():
+    global continuous
     if(state[0] < 1):
         pass
     else:
         state[0] -= 1
     continuous = True
-
-def off(s):
-    s.close()
-    exit()
 
 if __name__ == "__main__":
     main()

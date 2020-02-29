@@ -41,7 +41,6 @@ def main():
         GPIO.cleanup()
         print("Connection Closed!")
         
-
 def parseData(data):
     speed = data >> 2
     direction = data & 3
