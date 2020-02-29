@@ -8,7 +8,7 @@
 >pip3 install keyboard
 
 ### 2.2. RPI
->
+>sudo apt-get install python-rpi.gpio
 
 ## 3. 통신 방법
 ### 3.1. pc -> boat
