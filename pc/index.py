@@ -34,6 +34,8 @@ def main():
             gearThree()
         if key.is_pressed("space"):
             fullSpeed()
+        if key.is_pressed("b"):
+            reverseSpeed()
         left = key.is_pressed("left")
         right = key.is_pressed("right")
         #if left button and right button pushed
@@ -77,7 +79,7 @@ def connect():
     return s
 
 def printBoatStatus(raw_data):
-    os.system("clear")
+    os.system("cls")
     data = int.from_bytes(raw_data, byteorder='big', signed=False)
 
     print("voltage: {}".format(data))
@@ -96,6 +98,9 @@ def gearThree():
 
 def fullSpeed():
     state[0] = 4    #10000
+
+def reverseSpeed():
+    state[0] = 5
 
 def turnLeft():
     state[1] = 0    #00000

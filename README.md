@@ -8,7 +8,7 @@
 >pip3 install keyboard
 
 ### 2.2. RPI
->sudo apt-get install python-rpi.gpio
+>sudo apt-get install python-rpi.gpio  
 >pip3 install spidev
 #### 2.2.1. SPI 사용 설정
 >pi@raspberrypi ~ $ sudo raspi-config  

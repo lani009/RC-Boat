@@ -24,7 +24,7 @@ try:
             temp = '중'
 
         print(speed, temp)
-        conn.sendall(raw_data)
+        conn.sendall(bytes(1))
 except Exception as e:
     print(e)
 finally:

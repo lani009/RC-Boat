@@ -33,6 +33,7 @@ def main():
             speed, direction = parseData(int.from_bytes(raw_data, byteorder='big', signed=False))
             changeRudderAngle(direction)
             changeSpeed(speed)
+            conn.sendall(bytes(1))
     except Exception as e:
         print(e)
     finally:

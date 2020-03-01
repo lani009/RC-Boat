@@ -17,6 +17,7 @@ class PIN():
     BUZZER = 26
     SERVO = 11
     MOTOR = 7
+    MDRIVER = 6 #motor driver
 
 #define global variables -> constant
 HOST_ = ""
@@ -28,6 +29,7 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(PIN.MOTOR, GPIO.OUT)
 GPIO.setup(PIN.SERVO, GPIO.OUT)
 GPIO.setup(PIN.BUZZER, GPIO.OUT)
+GPIO.setup(PIN.MDRIVER, GPIO.OUT)
 
 servo = GPIO.PWM(PIN.SERVO, 50)
 speed = GPIO.PWM(PIN.MOTOR, 100)
@@ -85,6 +87,9 @@ def changeRudderAngle(direction):
         servo.ChangeDutyCycle(ANGLE.NEUTRAL)
     
 def changeSpeed(speed):
+    if(speed == 5):
+        pass
+        #speed.ChangeDutyCycle(25)
     speed.ChangeDutyCycle(speed * 25)
 
 def wifiBuzz(boolean):
