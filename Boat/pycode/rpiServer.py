@@ -16,8 +16,10 @@ class PIN():
     '''GPIO PINS'''
     BUZZER = 26
     SERVO = 11
-    MOTOR = 7
-    MDRIVER = 6 #motor driver
+    #MOTOR = 7
+    Pinout1 = 32
+    Pinout2 = 36
+    PinENA = 40
 
 #define global variables -> constant
 HOST_ = ""
@@ -26,15 +28,20 @@ isBuzz = False
 
 #GPIO Setup
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(PIN.MOTOR, GPIO.OUT)
+#GPIO.setup(PIN.MOTOR, GPIO.OUT)
 GPIO.setup(PIN.SERVO, GPIO.OUT)
 GPIO.setup(PIN.BUZZER, GPIO.OUT)
 GPIO.setup(PIN.MDRIVER, GPIO.OUT)
+GPIO.setup(PIN.Pinout1,GPIO.OUT)
+GPIO.setup(PIN.Pinout2,GPIO.OUT)
+GPIO.setup(PIN.PinENA,GPIO.OUT)
 
 servo = GPIO.PWM(PIN.SERVO, 50)
-speed = GPIO.PWM(PIN.MOTOR, 100)
+#speed = GPIO.PWM(PIN.MOTOR, 100)
+speed = GPIO.PWM(PIN.PinENA,50)
 servo.start(0)
 speed.start(0)
+
 
 #SPI Setup
 spi = spidev.SpiDev()
@@ -86,11 +93,16 @@ def changeRudderAngle(direction):
     else:
         servo.ChangeDutyCycle(ANGLE.NEUTRAL)
     
-def changeSpeed(speed):
+def changeSpeed(speed): 
     if(speed == 5):
-        pass
-        #speed.ChangeDutyCycle(25)
+        #assume under codes as reverse
+        speed.ChangeDutyCycle(25)
+        GPIO.output(PIN.Pinout1,GPIO.HIGH)#reverse
+        GPIO.output(PIN.Pinout2,GPIO.LOW)#reverse
+    #assume under codes as foward    
     speed.ChangeDutyCycle(speed * 25)
+    GPIO.output(PIN.Pinout1,GPIO.LOW)#foward
+    GPIO.output(PIN.Pinout2,GPIO.HIGH)#foward
 
 def wifiBuzz(boolean):
     '''Starts the buzzer if the soket connection is still not accepted'''

@@ -7,12 +7,22 @@ HOST_ = ""
 PORT_ = 1346
 
 #GPIO Setup
+
+pinout1 = 32
+pinout2 = 36
+pinENA = 40
 GPIO.setmode(GPIO.BOARD)
+GPIO.setwarnings(False)
+GPIO.setup(pinout1,GPIO.OUT)
+GPIO.setup(pinout2,GPIO.OUT)
+GPIO.setup(pinENA,GPIO.OUT)
 GPIO.setup(7,GPIO.OUT)
 GPIO.setup(11,GPIO.OUT)
 
+p = GPIO.PWM(pinENA,50)
 servo = GPIO.PWM(11,50)
 bright = GPIO.PWM(7,100)
+p.start(0)
 servo.start(0)
 bright.start(0)
 class ANGLE():
