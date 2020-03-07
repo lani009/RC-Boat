@@ -42,7 +42,6 @@ speed = GPIO.PWM(PIN.PinENA,50)
 servo.start(0)
 speed.start(0)
 
-
 #SPI Setup
 spi = spidev.SpiDev()
 spi.open(0,0)
@@ -95,14 +94,19 @@ def changeRudderAngle(direction):
     
 def changeSpeed(speed): 
     if(speed == 5):
-        #assume under codes as reverse
+        setReverse()
         speed.ChangeDutyCycle(25)
-        GPIO.output(PIN.Pinout1,GPIO.HIGH)#reverse
-        GPIO.output(PIN.Pinout2,GPIO.LOW)#reverse
-    #assume under codes as foward    
-    speed.ChangeDutyCycle(speed * 25)
-    GPIO.output(PIN.Pinout1,GPIO.LOW)#foward
-    GPIO.output(PIN.Pinout2,GPIO.HIGH)#foward
+    else:
+        setFoward()
+        speed.ChangeDutyCycle(speed * 25)
+    
+def setFoward():
+    GPIO.output(PIN.Pinout1, GPIO.LOW)
+    GPIO.output(PIN.Pinout2, GPIO.HIGH)
+
+def setReverse():
+    GPIO.output(PIN.Pinout1, GPIO.HIGH)
+    GPIO.output(PIN.Pinout2, GPIO.LOW)
 
 def wifiBuzz(boolean):
     '''Starts the buzzer if the soket connection is still not accepted'''
