@@ -82,7 +82,7 @@ def printBoatStatus(raw_data):
     os.system("cls")
     data = int.from_bytes(raw_data, byteorder='big', signed=False)
 
-    print("voltage: {}".format(data))
+    print("voltage: {}".format(data*3.3/1024))
 
 def zeroSpeed():
     state[0] = 0    #00000
