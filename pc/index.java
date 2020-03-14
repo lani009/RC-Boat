@@ -5,7 +5,9 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.Socket;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
 
 public class Index {
     final static int PORT = 1346;
@@ -15,7 +17,7 @@ public class Index {
         bw.write("IP address: ");
         bw.flush();
         final String ADDRESS = br.readLine();
-
+        
         Boat boat = null;
         try {
             boat = new Boat(ADDRESS, PORT);
@@ -23,9 +25,11 @@ public class Index {
             startKeyboardInput(boat);
         } catch (Exception e) {
             bw.write(e.getMessage());
+            bw.flush();
+            bw.close();
+            br.close();
             boat.close();
         }
-        finally{}
     }
 
     public static void startKeyboardInput(Boat boat) {
@@ -35,26 +39,37 @@ public class Index {
     }
 }
 
-class Boat {
-    final int PORT;
-    final String ADDRESS;
 
-    Socket socket = null;
-
-    public Boat(String address, int port) {
-        ADDRESS = address;
-        PORT = port;
+class IsKeyPressed {
+    private static volatile boolean wPressed = false;
+    public static boolean isWPressed() {
+        synchronized (IsKeyPressed.class) {
+            return wPressed;
+        }
     }
 
-    public void connect() throws IOException {
-        socket = new Socket(ADDRESS, PORT);
-    }
+    public static void main(String[] args) {
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
 
-    public void close() throws IOException {
-        socket.close();
-    }
+            @Override
+            public boolean dispatchKeyEvent(KeyEvent ke) {
+                synchronized (IsKeyPressed.class) {
+                    switch (ke.getID()) {
+                    case KeyEvent.KEY_PRESSED:
+                        if (ke.getKeyCode() == KeyEvent.VK_W) {
+                            wPressed = true;
+                        }
+                        break;
 
-    public void control() {
-
+                    case KeyEvent.KEY_RELEASED:
+                        if (ke.getKeyCode() == KeyEvent.VK_W) {
+                            wPressed = false;
+                        }
+                        break;
+                    }
+                    return false;
+                }
+            }
+        });
     }
 }
